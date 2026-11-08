@@ -44,7 +44,7 @@ ${color('pBase', 'Base color', '#c8a97e')}
 ${sel('pMode', 'Color harmony', [['analogous', 'Analogous'], ['complementary', 'Complementary'], ['split', 'Split complementary'], ['triadic', 'Triadic'], ['tetradic', 'Tetradic (square)'], ['mono', 'Monochromatic'], ['shades', 'Neutral + accent']], 'analogous')}
 <div class="btn-row"><button type="button" class="btn" id="pRand">Random palette</button></div>
 <p class="note">Tip: press <kbd>Space</kbd> to generate a random palette. Click any swatch to copy it.</p>
-</div><div class="panel"><div class="swatches" id="pOut" style="grid-template-columns:repeat(5,1fr)"></div>${code('pCss', 'Copy CSS')}</div></div>`,
+</div><div class="panel"><div class="swatches five" id="pOut"></div>${code('pCss', 'Copy CSS')}</div></div>`,
   js: () => {
     const base = el('pBase'), mode = el('pMode'), out = el('pOut'), css = el('pCss');
     const H = (h, s, l) => hslHex(h, clamp(s, 5, 100), clamp(l, 8, 95));

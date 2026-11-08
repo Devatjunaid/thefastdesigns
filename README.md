@@ -14,7 +14,8 @@ src/
   blog/        articles in Markdown, several per file, separated by @@@
 build.mjs      static site generator → writes ./public
 public/        generated site (committed, ready to deploy)
-wrangler.jsonc Cloudflare Workers static-assets config
+wrangler.jsonc Cloudflare Workers config (static assets + redirect Worker)
+src/worker.js  301 redirects: www → apex, /path → /path/
 ```
 
 Each tool definition contains its SEO title, meta description, keywords, UI markup, browser script, how-to steps, about text and FAQ. The build generates one page per tool at `/tools/<slug>/` with canonical URLs, Open Graph tags and JSON-LD (WebApplication, BreadcrumbList, HowTo, FAQPage). It also writes `sitemap.xml`, `robots.txt`, `_headers` and `404.html`.
@@ -64,6 +65,10 @@ Markdown body with ## headings, tables, lists and [links](/tools/color-converter
 ```
 
 `tool` must be an existing tool slug, because the article is linked from that tool's page. The build warns about broken internal links and about articles under 900 words.
+
+## SEO data
+
+Titles, meta descriptions, H1s, intros and worked examples for tools, the `<title>`, description and keywords for articles, and category page copy all live in `src/seo.mjs`. The build warns when a title is over 60 characters or a description is over 160.
 
 ## Adding a tool
 

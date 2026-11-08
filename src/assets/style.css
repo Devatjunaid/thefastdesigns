@@ -269,3 +269,9 @@ img.hero-img{display:block;width:100%;height:auto;border-radius:16px;border:1px 
 .guide-box.with-img{display:grid;grid-template-columns:220px 1fr;gap:22px;align-items:center}
 .guide-box .gb-img img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
 @media(max-width:600px){.guide-box.with-img{grid-template-columns:1fr}}
+.panel h2.ph{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:4px 0 12px;font-weight:700}
+.cat-title h2 a{text-decoration:none}.cat-title h2 a:hover{color:var(--accent)}
+.swatches.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:560px){.swatches.five{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.sw{min-width:0;overflow:hidden}
+.tool-head p+p{margin-top:12px}
