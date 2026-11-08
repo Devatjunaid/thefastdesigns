@@ -9,16 +9,20 @@ const PAGES = new Set(['home-toolbox', 'about-studio']);
 
 (async () => {
   const only = process.argv.slice(2);
-  const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
+  const b = await chromium.launch(), q = await b.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
   // QR code image from the real QR tool
-  await p.goto('http://localhost:8787/tools/qr-code-generator/');
-  await p.fill('#qrText', 'https://thefastdesigns.online'); await p.waitForTimeout(150);
-  const qr = await p.evaluate(() => document.getElementById('qrC').toDataURL('image/png'));
+  await q.goto('http://localhost:8787/tools/qr-code-generator/');
+  await q.fill('#qrText', 'https://thefastdesigns.online'); await q.waitForTimeout(150);
+  const qr = await q.evaluate(() => document.getElementById('qrC').toDataURL('image/png'));
   for (const [key, s] of Object.entries(S)) {
     if (only.length && !only.includes(key)) continue;
     const html = typeof s.html === 'function' ? s.html(qr) : s.html;
+    const p = await b.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
     await p.setContent(html, { waitUntil: 'load' });
-    if (html.includes('<script>')) await p.waitForFunction(() => document.title === 'ready', null, { timeout: 5000 });
+    if (html.includes('<script>')) {
+      const ready = () => p.waitForFunction(() => document.title === 'ready', null, { timeout: 3000 }).then(() => true, () => false);
+      if (!(await ready())) { await p.addScriptTag({ content: html.match(/<script>([\s\S]*?)<\/script>/)[1] }); if (!(await ready())) throw new Error('scene script failed: ' + key); }
+    }
     await p.waitForTimeout(60);
     const png = (await p.screenshot({ type: 'png' })).toString('base64');
     const out = await p.evaluate(async src => {
@@ -31,6 +35,7 @@ const PAGES = new Set(['home-toolbox', 'about-studio']);
     fs.writeFileSync(path.join(dir, key + '.webp'), Buffer.from(out.big, 'base64'));
     fs.writeFileSync(path.join(dir, key + '-640.webp'), Buffer.from(out.small, 'base64'));
     fs.writeFileSync(path.join(dir, key + '-og.jpg'), Buffer.from(out.jpg, 'base64'));
+    await p.close();
     console.log(key, Math.round(Buffer.from(out.big, 'base64').length / 1024) + 'KB', Math.round(Buffer.from(out.small, 'base64').length / 1024) + 'KB');
   }
   await b.close();
