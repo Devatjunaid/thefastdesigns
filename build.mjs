@@ -1,4 +1,4 @@
-// Static site generator for thefastdesigns.com — run: node build.mjs
+// Static site generator for thefastdesigns.online — run: node build.mjs
 import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { ICONS, LOGO } from './src/lib.mjs';
@@ -8,7 +8,7 @@ import image from './src/tools/image.mjs';
 import gen from './src/tools/gen.mjs';
 import calc from './src/tools/calc.mjs';
 
-const SITE = 'https://thefastdesigns.com', BRAND = 'TheFastDesigns', OUT = 'public';
+const SITE = 'https://thefastdesigns.online', BRAND = 'TheFastDesigns', OUT = 'public';
 const TOOLS = [...color, ...css, ...image, ...gen, ...calc];
 const CATS = [
   { id: 'color', name: 'Color Tools', blurb: 'Convert, check, extract and generate colors and palettes.' },
@@ -65,7 +65,7 @@ const footer = () => `<footer class="site"><div class="wrap"><div class="foot-gr
 <div><h4>Popular tools</h4><ul>${['color-palette-generator', 'image-compressor', 'contrast-checker', 'css-gradient-generator', 'image-resizer', 'favicon-generator'].map(s => TOOLS.find(t => t.slug === s)).map(t => `<li><a href="/tools/${t.slug}/">${t.name}</a></li>`).join('')}</ul></div>
 <div><h4>Categories</h4><ul>${CATS.map(c => `<li><a href="/#${c.id}">${c.name}</a></li>`).join('')}</ul></div>
 <div><h4>${BRAND}</h4><ul><li><a href="/about/">About</a></li><li><a href="/privacy/">Privacy policy</a></li><li><a href="/#how-it-works">How it works</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/sitemap.xml">Sitemap</a></li></ul></div></div>
-<div class="foot-bottom"><span>© ${new Date().getFullYear()} ${BRAND}.com · All tools are free to use.</span><span>Made for designers, developers &amp; creators.</span></div></div></footer>
+<div class="foot-bottom"><span>© ${new Date().getFullYear()} ${BRAND} · All tools are free to use.</span><span>Made for designers, developers &amp; creators.</span></div></div></footer>
 <script src="/assets/app.js?v=${V.js}"></script>`;
 
 const card = t => `<a class="tool-card" href="/tools/${t.slug}/" data-k="${esc([t.name, t.short, ...t.kw].join(' ').toLowerCase())}"><span class="ic">${ICONS[t.cat]}</span><h3>${t.name}</h3><p>${t.short}</p><span class="go">Use tool →</span></a>`;

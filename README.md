@@ -1,6 +1,6 @@
 # TheFastDesigns
 
-39 free, fast and private design tools for **thefastdesigns.com**. Everything runs in the browser with plain HTML, CSS and vanilla JavaScript, so there are no frameworks, external APIs, trackers or uploads.
+39 free, fast and private design tools for **thefastdesigns.online**. Everything runs in the browser with plain HTML, CSS and vanilla JavaScript, so there are no frameworks, external APIs, trackers or uploads.
 
 ## Structure
 
@@ -30,7 +30,7 @@ Requires Node 18+ and has no dependencies. Run it after editing anything in `src
 
 **Pages:** build command `node build.mjs` (or empty), build output directory `public`.
 
-Then add the custom domain `thefastdesigns.com`.
+Then add the custom domain `thefastdesigns.online`.
 
 ## Adding a tool
 
