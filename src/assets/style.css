@@ -262,3 +262,10 @@ ul.tips{list-style:none;padding:0}
 ul.tips li{position:relative;padding:10px 0 10px 30px;border-bottom:1px solid var(--line);margin:0}
 ul.tips li::before{content:"";position:absolute;left:4px;top:19px;width:9px;height:9px;border-radius:2px;background:var(--accent)}
 .side-box p.note{font-size:14px}
+
+/* images */
+img.hero-img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);margin:0 0 28px;background:var(--beige-3)}
+.post-card img{display:block;width:calc(100% + 44px);max-width:none;height:auto;margin:-22px -22px 16px;border-radius:var(--r) var(--r) 0 0;border-bottom:1px solid var(--line);background:var(--beige-3)}
+.guide-box.with-img{display:grid;grid-template-columns:220px 1fr;gap:22px;align-items:center}
+.guide-box .gb-img img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+@media(max-width:600px){.guide-box.with-img{grid-template-columns:1fr}}

@@ -1,6 +1,8 @@
 // Static site generator for thefastdesigns.online — run: node build.mjs
 import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, existsSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
+import { cpSync } from 'node:fs';
 import { ICONS, LOGO } from './src/lib.mjs';
 import { md, parseArticles } from './src/md.mjs';
 import EXTRA from './src/extra.mjs';
@@ -13,6 +15,7 @@ import moreColorCss from './src/tools/more-color-css.mjs';
 import moreImage from './src/tools/more-image.mjs';
 import moreGenCalc from './src/tools/more-gen-calc.mjs';
 
+const SCENES = createRequire(import.meta.url)('./scripts/scenes.cjs');
 const SITE = 'https://thefastdesigns.online', BRAND = 'TheFastDesigns', OUT = 'public', EMAIL = 'elonopo@gmail.com';
 const TOOLS = [...color, ...css, ...image, ...gen, ...calc, ...moreColorCss, ...moreImage, ...moreGenCalc];
 const CATS = [
@@ -49,22 +52,27 @@ const V = { css: hash(minCss), js: hash(appJs) };
 const faviconSvg = LOGO.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ').replace(' aria-hidden="true"', '');
 writeFileSync(`${OUT}/favicon.svg`, faviconSvg);
 writeFileSync(`${OUT}/assets/logo.svg`, faviconSvg);
+if (existsSync('src/images')) cpSync('src/images', `${OUT}/images`, { recursive: true });
 for (const f of ['apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'og-image.png']) if (existsSync(`src/assets/${f}`)) copyFileSync(`src/assets/${f}`, `${OUT}/${f}`);
 
 // ---------- templates ----------
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const ld = o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
+const alt = key => esc(SCENES[key] ? SCENES[key].alt : '');
+const pic = (dir, key, { sizes = '(max-width: 860px) 100vw, 760px', eager = false, cls = '' } = {}) => existsSync(`src/images/${dir}/${key}.webp`) ? `<img${cls ? ` class="${cls}"` : ''} src="/images/${dir}/${key}.webp" srcset="/images/${dir}/${key}-640.webp 640w, /images/${dir}/${key}.webp 1200w" sizes="${sizes}" width="1200" height="630" alt="${alt(key)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">` : '';
+const thumb = (key, w = 640) => existsSync(`src/images/blog/${key}-640.webp`) ? `<img src="/images/blog/${key}-640.webp" width="640" height="336" alt="${alt(key)}" loading="lazy" decoding="async">` : '';
+const ogFor = key => existsSync(`src/images/blog/${key}-og.jpg`) ? `${SITE}/images/blog/${key}-og.jpg` : null;
 const fullTitle = t => (t.length + BRAND.length + 3 <= 70 ? `${t} | ${BRAND}` : t);
 const fmtDate = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 
-function head({ title, desc, path, kw = [], schema = [], type = 'website' }) {
+function head({ title, desc, path, kw = [], schema = [], type = 'website', image = null }) {
   const url = SITE + path;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">${kw.length ? `\n<meta name="keywords" content="${esc(kw.join(', '))}">` : ''}
 <link rel="canonical" href="${url}"><meta name="robots" content="index,follow,max-image-preview:large">
-<meta property="og:type" content="${type}"><meta property="og:site_name" content="${BRAND}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${SITE}/og-image.png">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}">
+<meta property="og:type" content="${type}"><meta property="og:site_name" content="${BRAND}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${image || SITE + '/og-image.png'}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${image || SITE + '/og-image.png'}">
 <meta name="theme-color" content="#141414"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/style.css?v=${V.css}">
 ${schema.map(ld).join('\n')}
@@ -82,7 +90,7 @@ const footer = () => `<footer class="site"><div class="wrap"><div class="foot-gr
 <script src="/assets/app.js?v=${V.js}"></script>`;
 
 const card = t => `<a class="tool-card" href="/tools/${t.slug}/" data-k="${esc([t.name, t.short, ...t.kw].join(' ').toLowerCase())}"><span class="ic">${ICONS[t.cat]}</span><h3>${t.name}</h3><p>${t.short}</p><span class="go">Use tool →</span></a>`;
-const postCard = a => `<a class="post-card" href="/blog/${a.slug}/" data-cat="${a.cat}"><span class="post-cat">${catName(a.cat)}</span><h3>${esc(a.title)}</h3><p>${esc(a.desc)}</p><span class="post-meta">${a.mins} min read</span></a>`;
+const postCard = a => `<a class="post-card" href="/blog/${a.slug}/" data-cat="${a.cat}">${thumb(a.slug)}<span class="post-cat">${catName(a.cat)}</span><h3>${esc(a.title)}</h3><p>${esc(a.desc)}</p><span class="post-meta">${a.mins} min read</span></a>`;
 const faqHtml = list => list.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
 const faqLd = list => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: list.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
 const crumbLd = items => ({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item: SITE + item })) });
@@ -101,14 +109,14 @@ for (const t of TOOLS) {
     { '@context': 'https://schema.org', '@type': 'HowTo', name: `How to use the ${t.name}`, step: t.how.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, text: s })) },
     faqLd(t.faq),
   ];
-  write(path, `${head({ title: fullTitle(t.title), desc: t.desc, path, kw: t.kw, schema })}${header()}
+  write(path, `${head({ title: fullTitle(t.title), desc: t.desc, path, kw: t.kw, schema, image: art ? ogFor(art.slug) : null })}${header()}
 <main id="main" class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/#${t.cat}">${catName(t.cat)}</a> › <span>${t.name}</span></nav>
 <div class="tool-head"><h1>${t.name}</h1><p>${t.intro}</p><div class="tags"><span>100% free</span><span>No sign-up</span><span>Works offline</span><span>Runs in your browser</span></div></div>
 <section class="tool-box" aria-label="${esc(t.name)}">${t.html}</section>
 <div class="content"><article class="prose"><h2>How to use the ${t.name}</h2><ol class="howto">${t.how.map(s => `<li>${esc(s)}</li>`).join('')}</ol>
 <h2>About this ${t.name.toLowerCase()}</h2>${t.about}
 ${tips.length ? `<h2>Tips and best practices</h2><ul class="tips">${tips.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : ''}
-${art ? `<div class="guide-box"><span class="post-cat">In-depth guide</span><h3><a href="/blog/${art.slug}/">${esc(art.title)}</a></h3><p>${esc(art.desc)}</p><a class="btn-alt" href="/blog/${art.slug}/">Read the guide (${art.mins} min)</a></div>` : ''}
+${art ? `<div class="guide-box with-img"><a href="/blog/${art.slug}/" class="gb-img" tabindex="-1">${thumb(art.slug)}</a><div><span class="post-cat">In-depth guide</span><h3><a href="/blog/${art.slug}/">${esc(art.title)}</a></h3><p>${esc(art.desc)}</p><a class="btn-alt" href="/blog/${art.slug}/">Read the guide (${art.mins} min)</a></div></div>` : ''}
 <h2>Frequently asked questions</h2><div class="faq">${faqHtml(t.faq)}</div></article>
 <aside class="side"><div class="side-box"><div class="privacy-pill">${ICONS.shield}<span><b>Private by design.</b> This tool processes everything on your device. Nothing is uploaded or stored.</span></div></div>
 ${sideList(`More ${catName(t.cat).toLowerCase()}`, related)}${sideList('You might also like', others)}</aside></div></main>
@@ -126,10 +134,11 @@ ${footer()}<script>document.getElementById('blogFilter').addEventListener('click
 
 for (const a of ARTICLES) {
   const path = `/blog/${a.slug}/`, more = ARTICLES.filter(x => x !== a && x.cat === a.cat).slice(0, 4), date = a.date || '2026-11-08';
-  const schema = [{ '@context': 'https://schema.org', '@type': 'Article', headline: a.title, description: a.desc, datePublished: date, dateModified: date, wordCount: a.words, mainEntityOfPage: SITE + path, image: SITE + '/og-image.png', author: { '@type': 'Organization', name: `${BRAND} Editorial`, url: SITE + '/about/' }, publisher: { '@type': 'Organization', name: BRAND, logo: { '@type': 'ImageObject', url: SITE + '/icon-512.png' } } }, crumbLd([['Home', '/'], ['Blog', '/blog/'], [a.title, path]])];
-  write(path, `${head({ title: fullTitle(a.title), desc: a.desc, path, kw: (a.keywords || '').split(',').map(s => s.trim()).filter(Boolean), schema, type: 'article' })}${header()}
+  const schema = [{ '@context': 'https://schema.org', '@type': 'Article', headline: a.title, description: a.desc, datePublished: date, dateModified: date, wordCount: a.words, mainEntityOfPage: SITE + path, image: { '@type': 'ImageObject', url: ogFor(a.slug) || SITE + '/og-image.png', width: 1200, height: 630 }, author: { '@type': 'Organization', name: `${BRAND} Editorial`, url: SITE + '/about/' }, publisher: { '@type': 'Organization', name: BRAND, logo: { '@type': 'ImageObject', url: SITE + '/icon-512.png' } } }, crumbLd([['Home', '/'], ['Blog', '/blog/'], [a.title, path]])];
+  write(path, `${head({ title: fullTitle(a.title), desc: a.desc, path, kw: (a.keywords || '').split(',').map(s => s.trim()).filter(Boolean), schema, type: 'article', image: ogFor(a.slug) })}${header()}
 <main id="main" class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/blog/">Blog</a> › <span>${catName(a.cat)}</span></nav>
 <div class="content article"><article class="prose"><header class="post-head"><span class="post-cat">${catName(a.cat)}</span><h1>${esc(a.title)}</h1><p class="lead">${esc(a.desc)}</p><p class="post-meta">By ${BRAND} Editorial · ${fmtDate(date)} · ${a.mins} min read</p></header>
+${pic('blog', a.slug, { eager: true, cls: 'hero-img' })}
 ${a.toc.length > 2 ? `<nav class="toc" aria-label="Contents"><b>In this guide</b><ol>${a.toc.map(h => `<li><a href="#${h.id}">${esc(h.text)}</a></li>`).join('')}</ol></nav>` : ''}
 ${a.html}
 <div class="guide-box"><span class="post-cat">Free tool</span><h3><a href="/tools/${a.tool.slug}/">${a.tool.name}</a></h3><p>${a.tool.short} Runs in your browser, nothing is uploaded.</p><a class="btn" href="/tools/${a.tool.slug}/">Open the ${a.tool.name}</a></div></article>
@@ -172,8 +181,8 @@ ${CATS.map(c => `<div class="cat-section" id="${c.id}"><div class="cat-title"><s
 ].map(([i, h, p]) => `<div class="feature"><span class="ic">${ICONS[i]}</span><h3>${h}</h3><p>${p}</p></div>`).join('')}</div></div></section>
 <section class="block" id="how-it-works"><div class="wrap"><div class="sec-head"><span class="eyebrow">How it works</span><h2>Three steps, zero friction</h2><p>Every tool follows the same simple pattern, so once you’ve used one you know them all.</p></div>
 <ol class="steps"><li><h3>Pick a tool</h3><p>Browse the categories above or search for what you need: palettes, gradients, image resizing, QR codes, unit conversion and more.</p></li><li><h3>Add your input</h3><p>Drop an image, choose a color or adjust the sliders. A live preview shows the result instantly as you work.</p></li><li><h3>Copy or download</h3><p>Copy the generated code or values with one click, or download your finished files in the format you need.</p></li></ol>
-<div class="split" style="margin-top:48px"><div><h2>Browser-based technology, no cloud required</h2><p class="muted">Each tool uses standard web technologies built into your browser: the Canvas API for images, native color parsing for colors and plain JavaScript for calculations. That’s why the tools are fast, reliable and safe to use with client work or confidential files.</p><a class="btn" href="#tools">Start designing</a></div>
-<ul class="checklist"><li>Images are edited with the HTML5 Canvas on your device</li><li>No external scripts, trackers, fonts or APIs</li><li>Lightweight static pages that load in under a second</li><li>Responsive design for desktop, tablet and phone</li><li>Accessible, keyboard-friendly controls</li></ul></div></div></section>
+<div class="split" style="margin-top:48px"><div><h2>Browser-based technology, no cloud required</h2><p class="muted">Each tool uses standard web technologies built into your browser: the Canvas API for images, native color parsing for colors and plain JavaScript for calculations. That’s why the tools are fast, reliable and safe to use with client work or confidential files.</p><ul class="checklist" style="margin:0 0 24px"><li>Images are edited with the HTML5 Canvas on your device</li><li>No external scripts, trackers, fonts or APIs</li><li>Lightweight static pages that load in under a second</li><li>Responsive design for desktop, tablet and phone</li><li>Accessible, keyboard-friendly controls</li></ul><a class="btn" href="#tools">Start designing</a></div>
+<div>${pic('pages', 'home-toolbox', { sizes: '(max-width: 820px) 100vw, 560px', cls: 'hero-img' })}</div></div></section>
 <section class="block" id="guides"><div class="wrap"><div class="sec-head"><span class="eyebrow">From the blog</span><h2>Learn the why behind the tools</h2><p>Short, practical guides with real numbers: file formats compared, accessibility rules explained, and print sizes demystified.</p></div>
 <div class="post-grid">${[0, 9, 20, 41, 52, 60].map(i => ARTICLES[i % ARTICLES.length]).filter((a, i, arr) => a && arr.indexOf(a) === i).map(postCard).join('')}</div><p style="margin-top:20px"><a class="btn-alt" href="/blog/">All ${ARTICLES.length} guides</a></p></div></section>
 <section class="block" id="who"><div class="wrap"><div class="dark-band"><div class="split"><div><h2>One toolbox for every creative workflow</h2><p>Web designers build palettes and check contrast. Developers grab CSS for gradients, shadows, grids and fluid type. Marketers resize and compress images for social media. Print designers convert units and calculate DPI. All in one place, all free.</p><a class="btn" href="#tools">Explore the tools</a></div>
@@ -185,7 +194,7 @@ ${footer()}</body></html>`);
 const page = (path, title, desc, body, extra = '') => write(path, `${head({ title, desc, path, schema: [crumbLd([['Home', '/'], [title.split(' –')[0], path]])] })}${header()}<main id="main" class="wrap" style="max-width:820px;padding-top:48px;padding-bottom:64px"><article class="prose">${body}</article></main>${footer()}${extra}</body></html>`);
 const updated = 'November 8, 2026';
 page('/about/', 'About TheFastDesigns – Free Browser-Based Design Tools', 'Learn about TheFastDesigns, a free collection of fast, private, browser-based design tools for colors, CSS, images, typography and design calculations.',
-  `<span class="eyebrow">About</span><h1>Design tools that respect your time and privacy</h1><p>${BRAND} is a collection of ${TOOLS.length} free design tools and ${ARTICLES.length} in-depth guides: color utilities, CSS generators, image editors, typography helpers, QR codes and design calculators. The goal is simple: give designers, developers and creators the small everyday utilities they reach for constantly, without sign-ups, intrusive ads or uploads to unknown servers.</p><h2>How we’re different</h2><ul><li><strong>Everything runs in your browser.</strong> No cloud processing and no third-party APIs.</li><li><strong>Fast by default.</strong> Lightweight static pages with no frameworks or tracking scripts.</li><li><strong>Free forever.</strong> No paywalls, no watermarks and no usage limits.</li><li><strong>Explained, not just provided.</strong> Every tool links to a guide that explains the standards and numbers behind it.</li></ul><h2>Our tools</h2><ul>${CATS.map(c => `<li><a href="/#${c.id}">${c.name}</a>: ${c.blurb}</li>`).join('')}</ul><h2>Get in touch</h2><p>Suggestions for new tools, bug reports and feedback are welcome at <a href="mailto:${EMAIL}">${EMAIL}</a>.</p><p><a class="btn" href="/#tools">Browse all tools</a></p>`);
+  `<span class="eyebrow">About</span><h1>Design tools that respect your time and privacy</h1>${pic('pages', 'about-studio', { eager: true, cls: 'hero-img' })}<p>${BRAND} is a collection of ${TOOLS.length} free design tools and ${ARTICLES.length} in-depth guides: color utilities, CSS generators, image editors, typography helpers, QR codes and design calculators. The goal is simple: give designers, developers and creators the small everyday utilities they reach for constantly, without sign-ups, intrusive ads or uploads to unknown servers.</p><h2>How we’re different</h2><ul><li><strong>Everything runs in your browser.</strong> No cloud processing and no third-party APIs.</li><li><strong>Fast by default.</strong> Lightweight static pages with no frameworks or tracking scripts.</li><li><strong>Free forever.</strong> No paywalls, no watermarks and no usage limits.</li><li><strong>Explained, not just provided.</strong> Every tool links to a guide that explains the standards and numbers behind it.</li></ul><h2>Our tools</h2><ul>${CATS.map(c => `<li><a href="/#${c.id}">${c.name}</a>: ${c.blurb}</li>`).join('')}</ul><h2>Get in touch</h2><p>Suggestions for new tools, bug reports and feedback are welcome at <a href="mailto:${EMAIL}">${EMAIL}</a>.</p><p><a class="btn" href="/#tools">Browse all tools</a></p>`);
 page('/contact/', 'Contact TheFastDesigns – Feedback, Bug Reports & Tool Requests', 'Contact TheFastDesigns by email for feedback, bug reports, tool suggestions or partnership questions. We read every message.',
   `<span class="eyebrow">Contact</span><h1>Contact us</h1><p>Found a bug, have an idea for a new tool, or want to suggest an improvement to a guide? Email us and we’ll get back to you.</p>
 <div class="guide-box" style="margin:24px 0"><span class="post-cat">Email</span><h3><a href="mailto:${EMAIL}">${EMAIL}</a></h3><p>Best for bug reports, tool requests, corrections and general questions.</p><button type="button" class="btn-alt" data-copy="${EMAIL}">Copy email address</button></div>
@@ -224,7 +233,7 @@ const urls = [...validPaths];
 writeFileSync(`${OUT}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${SITE}${u}</loc><lastmod>${today}</lastmod><priority>${u === '/' ? '1.0' : u.startsWith('/tools/') ? '0.8' : u.startsWith('/blog/') ? '0.7' : '0.4'}</priority></url>`).join('\n')}\n</urlset>\n`);
 writeFileSync(`${OUT}/robots.txt`, `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 writeFileSync(`${OUT}/site.webmanifest`, JSON.stringify({ name: BRAND, short_name: BRAND, start_url: '/', display: 'standalone', background_color: '#FAF7F2', theme_color: '#141414', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }, { src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png' }] }, null, 2));
-writeFileSync(`${OUT}/_headers`, `/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n`);
+writeFileSync(`${OUT}/_headers`, `/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/images/*\n  Cache-Control: public, max-age=2592000\n\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n`);
 
 const totalWords = ARTICLES.reduce((s, a) => s + a.words, 0);
 console.log(`Built ${TOOLS.length} tools, ${ARTICLES.length} articles (${totalWords} words) → ${urls.length} pages in ./${OUT}`);

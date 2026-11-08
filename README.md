@@ -35,6 +35,19 @@ Requires Node 18+ and has no dependencies. Run it after editing anything in `src
 
 Then add the custom domain `thefastdesigns.online`.
 
+## Images
+
+Article and page illustrations are drawn as HTML/CSS scenes in `scripts/scenes.cjs` (one per article, with its alt text) and rendered to optimized files in `src/images/` by Chromium:
+
+```bash
+node build.mjs
+(cd public && python3 -m http.server 8787 &)
+node scripts/make-images.cjs            # all images
+node scripts/make-images.cjs some-slug  # just one
+```
+
+Each scene produces a 1200px WebP (article hero), a 640px WebP (cards and thumbnails, used via `srcset`) and a JPEG for social share previews. The build copies `src/images/` to `public/images/`. The local server is only used to borrow the site's QR encoder for QR illustrations.
+
 ## Writing a blog article
 
 Add a block to any file in `src/blog/`:
