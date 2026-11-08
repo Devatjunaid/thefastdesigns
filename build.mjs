@@ -67,9 +67,11 @@ for (const f of ['apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'og-ima
 // ---------- templates ----------
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const ld = o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
+const imgV = f => existsSync(f) ? '?v=' + hash(readFileSync(f)) : '';
+const iu = (dir, name) => `/images/${dir}/${name}${imgV(`src/images/${dir}/${name}`)}`;
 const alt = key => esc(SCENES[key] ? SCENES[key].alt : '');
-const pic = (dir, key, { sizes = '(max-width: 860px) 100vw, 760px', eager = false, cls = '' } = {}) => existsSync(`src/images/${dir}/${key}.webp`) ? `<img${cls ? ` class="${cls}"` : ''} src="/images/${dir}/${key}.webp" srcset="/images/${dir}/${key}-640.webp 640w, /images/${dir}/${key}.webp 1200w" sizes="${sizes}" width="1200" height="630" alt="${alt(key)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">` : '';
-const thumb = (key, w = 640) => existsSync(`src/images/blog/${key}-640.webp`) ? `<img src="/images/blog/${key}-640.webp" width="640" height="336" alt="${alt(key)}" loading="lazy" decoding="async">` : '';
+const pic = (dir, key, { sizes = '(max-width: 860px) 100vw, 760px', eager = false, cls = '' } = {}) => existsSync(`src/images/${dir}/${key}.webp`) ? `<img${cls ? ` class="${cls}"` : ''} src="${iu(dir, key + '.webp')}" srcset="${iu(dir, key + '-640.webp')} 640w, ${iu(dir, key + '.webp')} 1200w" sizes="${sizes}" width="1200" height="630" alt="${alt(key)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">` : '';
+const thumb = (key, { sizes = '(max-width: 700px) calc(100vw - 40px), 380px', eager = 0 } = {}) => existsSync(`src/images/blog/${key}-640.webp`) ? `<img src="${iu('blog', key + '-640.webp')}" srcset="${iu('blog', key + '-400.webp')} 400w, ${iu('blog', key + '-640.webp')} 640w" sizes="${sizes}" width="640" height="336" alt="${alt(key)}" ${eager ? (eager === 2 ? 'fetchpriority="high"' : 'loading="eager"') : 'loading="lazy"'} decoding="async">` : '';
 const ogFor = key => existsSync(`src/images/blog/${key}-og.jpg`) ? `${SITE}/images/blog/${key}-og.jpg` : null;
 const fullTitle = t => (t.length + BRAND.length + 3 <= 60 ? `${t} | ${BRAND}` : t);
 const fmtDate = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
@@ -83,7 +85,7 @@ function head({ title, desc, path, kw = [], schema = [], type = 'website', image
 <meta property="og:type" content="${type}"><meta property="og:site_name" content="${BRAND}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${image || SITE + '/og-image.png'}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${image || SITE + '/og-image.png'}">
 <meta name="theme-color" content="#141414"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/assets/style.css?v=${V.css}">
+<style>${minCss}</style>
 ${schema.map(ld).join('\n')}
 </head><body><a class="skip" href="#main">Skip to content</a>`;
 }
@@ -92,14 +94,14 @@ const header = () => `<header class="site"><div class="wrap nav"><a class="brand
 <button class="menu-btn" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 <nav aria-label="Main"><ul>${NAV.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul></nav></div></header>`;
 const footer = () => `<footer class="site"><div class="wrap"><div class="foot-grid"><div><a class="brand" href="/">${LOGO}<span>TheFast<em>Designs</em></span></a><p>${TOOLS.length} free design tools that run entirely in your browser. No sign-up, no uploads, no limits.</p></div>
-<div><h4>Popular tools</h4><ul>${['color-palette-generator', 'image-compressor', 'qr-code-generator', 'contrast-checker', 'css-gradient-generator', 'image-resizer', 'favicon-generator'].map(s => toolBy[s]).map(t => `<li><a href="/tools/${t.slug}/">${t.name}</a></li>`).join('')}</ul></div>
-<div><h4>Categories</h4><ul>${CATS.map(c => `<li><a href="${catUrl(c.id)}">${c.name}</a></li>`).join('')}<li><a href="/blog/">Design blog</a></li></ul></div>
-<div><h4>${BRAND}</h4><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy/">Privacy policy</a></li><li><a href="/terms/">Terms &amp; conditions</a></li><li><a href="/sitemap.xml">Sitemap</a></li></ul></div></div>
+<div><h2 class="fh">Popular tools</h2><ul>${['color-palette-generator', 'image-compressor', 'qr-code-generator', 'contrast-checker', 'css-gradient-generator', 'image-resizer', 'favicon-generator'].map(s => toolBy[s]).map(t => `<li><a href="/tools/${t.slug}/">${t.name}</a></li>`).join('')}</ul></div>
+<div><h2 class="fh">Categories</h2><ul>${CATS.map(c => `<li><a href="${catUrl(c.id)}">${c.name}</a></li>`).join('')}<li><a href="/blog/">Design blog</a></li></ul></div>
+<div><h2 class="fh">${BRAND}</h2><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy/">Privacy policy</a></li><li><a href="/terms/">Terms &amp; conditions</a></li><li><a href="/sitemap.xml">Sitemap</a></li></ul></div></div>
 <div class="foot-bottom"><span>© ${new Date().getFullYear()} ${BRAND} · All tools are free to use.</span><span><a href="mailto:${EMAIL}">${EMAIL}</a></span></div></div></footer>
-<script src="/assets/app.js?v=${V.js}"></script>`;
+<script src="/assets/app.js?v=${V.js}" defer></script>`;
 
 const card = t => `<a class="tool-card" href="/tools/${t.slug}/" data-k="${esc([t.name, t.short, ...t.kw].join(' ').toLowerCase())}"><span class="ic">${ICONS[t.cat]}</span><h3>${t.name}</h3><p>${t.short}</p><span class="go">Use tool →</span></a>`;
-const postCard = a => `<a class="post-card" href="/blog/${a.slug}/" data-cat="${a.cat}">${thumb(a.slug)}<span class="post-cat">${catName(a.cat)}</span><h3>${esc(a.title)}</h3><p>${esc(a.desc)}</p><span class="post-meta">${a.mins} min read</span></a>`;
+const postCard = (a, i = 99, eagerN = 0) => `<a class="post-card" href="/blog/${a.slug}/" data-cat="${a.cat}">${thumb(a.slug, { eager: i < eagerN ? (i === 0 ? 2 : 1) : 0 })}<span class="post-cat">${catName(a.cat)}</span><h3>${esc(a.title)}</h3><p>${esc(a.desc)}</p><span class="post-meta">${a.mins} min read</span></a>`;
 const faqHtml = list => list.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
 const faqLd = list => ({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: list.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
 const crumbLd = items => ({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item: SITE + item })) });
@@ -125,11 +127,11 @@ for (const t of TOOLS) {
 <h2>About this ${t.name.toLowerCase()}</h2>${t.about}
 ${t.example || ''}
 ${tips.length ? `<h2>Tips and best practices</h2><ul class="tips">${tips.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : ''}
-${art ? `<div class="guide-box with-img"><a href="/blog/${art.slug}/" class="gb-img" tabindex="-1">${thumb(art.slug)}</a><div><span class="post-cat">In-depth guide</span><h3><a href="/blog/${art.slug}/">${esc(art.title)}</a></h3><p>${esc(art.desc)}</p><a class="btn-alt" href="/blog/${art.slug}/">Read the guide (${art.mins} min)</a></div></div>` : ''}
+${art ? `<div class="guide-box with-img"><a href="/blog/${art.slug}/" class="gb-img" tabindex="-1">${thumb(art.slug, { sizes: '(max-width: 600px) calc(100vw - 80px), 220px' })}</a><div><span class="post-cat">In-depth guide</span><h3><a href="/blog/${art.slug}/">${esc(art.title)}</a></h3><p>${esc(art.desc)}</p><a class="btn-alt" href="/blog/${art.slug}/">Read the guide (${art.mins} min)</a></div></div>` : ''}
 <h2>Frequently asked questions</h2><div class="faq">${faqHtml(t.faq)}</div></article>
 <aside class="side"><div class="side-box"><div class="privacy-pill">${ICONS.shield}<span><b>Private by design.</b> This tool processes everything on your device. Nothing is uploaded or stored.</span></div></div>
 ${sideList(`More ${catName(t.cat).toLowerCase()}`, related)}${sideList('You might also like', others)}</aside></div></main>
-${footer()}<script>${t.pre || ''}(${t.js.toString()})();</script></body></html>`);
+${footer()}<script>document.addEventListener('DOMContentLoaded',()=>{${t.pre || ''}(${t.js.toString()})();});</script></body></html>`);
 }
 
 // ---------- blog ----------
@@ -138,7 +140,7 @@ write('/blog/', `${head({ title: 'Design Blog: Color, CSS, Image & Typography Gu
 <main id="main" class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <span>Blog</span></nav>
 <div class="tool-head"><span class="eyebrow">Design blog</span><h1>Guides for designers who like to know why</h1><p>Plain-language explanations of the formats, standards and numbers behind everyday design work, each paired with a free tool so you can try it straight away.</p></div>
 <div class="seg" id="blogFilter"><button type="button" class="on" data-f="all">All</button>${CATS.map(c => `<button type="button" data-f="${c.id}">${c.name.replace('Typography & ', '').replace('Design ', '')}</button>`).join('')}</div>
-<h2 style="font-size:1.35rem;margin:0 0 16px">All ${ARTICLES.length} guides</h2><div class="post-grid" id="posts">${ARTICLES.map(postCard).join('')}</div></main>
+<h2 style="font-size:1.35rem;margin:0 0 16px">All ${ARTICLES.length} guides</h2><div class="post-grid" id="posts">${ARTICLES.map((a, i) => postCard(a, i, 3)).join('')}</div></main>
 ${footer()}<script>document.getElementById('blogFilter').addEventListener('click',e=>{const f=e.target.dataset.f;if(!f)return;document.querySelectorAll('#blogFilter button').forEach(b=>b.classList.toggle('on',b===e.target));document.querySelectorAll('#posts .post-card').forEach(c=>c.hidden=f!=='all'&&c.dataset.cat!==f)});</script></body></html>`);
 
 for (const a of ARTICLES) {
@@ -167,7 +169,7 @@ for (const c of CATS) {
 <main id="main" class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <span>${c.name}</span></nav>
 <div class="tool-head"><span class="eyebrow">${list.length} free tools</span><h1>${m.h1}</h1>${m.intro}</div>
 <h2 style="font-size:1.35rem;margin:0 0 16px">All ${c.name.toLowerCase()}</h2><div class="tool-grid" style="margin-bottom:56px">${list.map(card).join('')}</div>
-<section style="margin-bottom:56px"><h2>Guides for ${c.name.toLowerCase()}</h2><div class="post-grid">${guides.map(postCard).join('')}</div></section></main>
+<section style="margin-bottom:56px"><h2>Guides for ${c.name.toLowerCase()}</h2><div class="post-grid">${guides.map(a => postCard(a)).join('')}</div></section></main>
 ${footer()}</body></html>`);
 }
 
@@ -208,7 +210,7 @@ ${CATS.map(c => `<div class="cat-section" id="${c.id}"><div class="cat-title"><s
 <div class="split" style="margin-top:48px"><div><h2>Browser-based technology, no cloud required</h2><p class="muted">Each tool uses standard web technologies built into your browser: the Canvas API for images, native color parsing for colors and plain JavaScript for calculations. That’s why the tools are fast, reliable and safe to use with client work or confidential files.</p><ul class="checklist" style="margin:0 0 24px"><li>Images are edited with the HTML5 Canvas on your device</li><li>No external scripts, trackers, fonts or APIs</li><li>Lightweight static pages that load in under a second</li><li>Responsive design for desktop, tablet and phone</li><li>Accessible, keyboard-friendly controls</li></ul><a class="btn" href="#tools">Start designing</a></div>
 <div>${pic('pages', 'home-toolbox', { sizes: '(max-width: 820px) 100vw, 560px', cls: 'hero-img' })}</div></div></section>
 <section class="block" id="guides"><div class="wrap"><div class="sec-head"><span class="eyebrow">From the blog</span><h2>Learn the why behind the tools</h2><p>Short, practical guides with real numbers: file formats compared, accessibility rules explained, and print sizes demystified.</p></div>
-<div class="post-grid">${[0, 9, 20, 41, 52, 60].map(i => ARTICLES[i % ARTICLES.length]).filter((a, i, arr) => a && arr.indexOf(a) === i).map(postCard).join('')}</div><p style="margin-top:20px"><a class="btn-alt" href="/blog/">All ${ARTICLES.length} guides</a></p></div></section>
+<div class="post-grid">${[0, 9, 20, 41, 52, 60].map(i => ARTICLES[i % ARTICLES.length]).filter((a, i, arr) => a && arr.indexOf(a) === i).map(a => postCard(a)).join('')}</div><p style="margin-top:20px"><a class="btn-alt" href="/blog/">All ${ARTICLES.length} guides</a></p></div></section>
 <section class="block" id="who"><div class="wrap"><div class="dark-band"><div class="split"><div><h2>One toolbox for every creative workflow</h2><p>Web designers build palettes and check contrast. Developers grab CSS for gradients, shadows, grids and fluid type. Marketers resize and compress images for social media. Print designers convert units and calculate DPI. All in one place, all free.</p><a class="btn" href="#tools">Explore the tools</a></div>
 <ul class="checklist" style="color:#F5EFE4">${['UI & web designers', 'Front-end developers', 'Social media managers & marketers', 'Print & graphic designers', 'Students & educators', 'Bloggers & small businesses'].map(x => `<li style="border-color:#2E2B27">${x}</li>`).join('')}</ul></div></div></div></section>
 <section class="block" id="faq"><div class="wrap" style="max-width:860px"><div class="sec-head"><span class="eyebrow">FAQ</span><h2>Frequently asked questions</h2></div><div class="faq">${faqHtml(homeFaq)}</div></div></section></main>
@@ -261,7 +263,7 @@ const lastmod = u => { if (u.startsWith('/tools/')) { const t = toolBy[u.split('
 writeFileSync(`${OUT}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${SITE}${u}</loc><lastmod>${lastmod(u)}</lastmod><priority>${u === '/' ? '1.0' : u.startsWith('/tools/') ? '0.8' : u.startsWith('/blog/') ? '0.7' : '0.4'}</priority></url>`).join('\n')}\n</urlset>\n`);
 writeFileSync(`${OUT}/robots.txt`, `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 writeFileSync(`${OUT}/site.webmanifest`, JSON.stringify({ name: BRAND, short_name: BRAND, start_url: '/', display: 'standalone', background_color: '#FAF7F2', theme_color: '#141414', icons: [{ src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }, { src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png' }] }, null, 2));
-writeFileSync(`${OUT}/_headers`, `/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/images/*\n  Cache-Control: public, max-age=2592000\n\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n`);
+writeFileSync(`${OUT}/_headers`, `/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/images/*\n  Cache-Control: public, max-age=31536000, immutable\n\n/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: SAMEORIGIN\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n`);
 
 const totalWords = ARTICLES.reduce((s, a) => s + a.words, 0);
 console.log(`Built ${TOOLS.length} tools, ${ARTICLES.length} articles (${totalWords} words) → ${urls.length} pages in ./${OUT}`);

@@ -29,12 +29,13 @@ const PAGES = new Set(['home-toolbox', 'about-studio']);
       const img = new Image(); img.src = 'data:image/png;base64,' + src; await img.decode();
       const enc = (w, q) => { const c = document.createElement('canvas'); c.width = w; c.height = Math.round(w * 630 / 1200); const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(img, 0, 0, c.width, c.height); return c.toDataURL('image/webp', q).split(',')[1]; };
       const jpg = (() => { const c = document.createElement('canvas'); c.width = 1200; c.height = 630; c.getContext('2d').drawImage(img, 0, 0); return c.toDataURL('image/jpeg', 0.82).split(',')[1]; })();
-      return { big: enc(1200, 0.8), small: enc(640, 0.78), jpg };
+      return { big: enc(1200, 0.8), small: enc(640, 0.78), tiny: enc(400, 0.78), jpg };
     }, png);
     const dir = path.join(OUT, PAGES.has(key) ? 'pages' : 'blog'); fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, key + '.webp'), Buffer.from(out.big, 'base64'));
     fs.writeFileSync(path.join(dir, key + '-640.webp'), Buffer.from(out.small, 'base64'));
     fs.writeFileSync(path.join(dir, key + '-og.jpg'), Buffer.from(out.jpg, 'base64'));
+    fs.writeFileSync(path.join(dir, key + '-400.webp'), Buffer.from(out.tiny, 'base64'));
     await p.close();
     console.log(key, Math.round(Buffer.from(out.big, 'base64').length / 1024) + 'KB', Math.round(Buffer.from(out.small, 'base64').length / 1024) + 'KB');
   }
