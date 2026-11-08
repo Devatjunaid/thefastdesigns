@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers static assets — the site is fully static, no Worker script needed.
+  "name": "thefastdesigns",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
