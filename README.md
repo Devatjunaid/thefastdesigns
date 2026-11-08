@@ -1,6 +1,6 @@
 # TheFastDesigns
 
-39 free, fast and private design tools for **thefastdesigns.online**. Everything runs in the browser with plain HTML, CSS and vanilla JavaScript, so there are no frameworks, external APIs, trackers or uploads.
+69 free, fast and private design tools and 69 in-depth guides for **thefastdesigns.online**. Everything runs in the browser with plain HTML, CSS and vanilla JavaScript, so there are no frameworks, external APIs, trackers or uploads.
 
 ## Structure
 
@@ -8,7 +8,10 @@
 src/
   assets/      style.css, app.js (shared helpers), icons / OG image
   lib.mjs      HTML control helpers, icons, logo SVG
-  tools/       tool definitions by category (color, css, image, gen, calc)
+  md.mjs       tiny Markdown converter for blog articles
+  extra.mjs    "tips and best practices" for the original tools
+  tools/       tool definitions by category
+  blog/        articles in Markdown, several per file, separated by @@@
 build.mjs      static site generator → writes ./public
 public/        generated site (committed, ready to deploy)
 wrangler.jsonc Cloudflare Workers static-assets config
@@ -31,6 +34,23 @@ Requires Node 18+ and has no dependencies. Run it after editing anything in `src
 **Pages:** build command `node build.mjs` (or empty), build output directory `public`.
 
 Then add the custom domain `thefastdesigns.online`.
+
+## Writing a blog article
+
+Add a block to any file in `src/blog/`:
+
+```
+@@@
+slug: my-article-slug
+tool: color-converter
+title: Article title
+desc: Meta description
+keywords: comma, separated, keywords
+###
+Markdown body with ## headings, tables, lists and [links](/tools/color-converter/).
+```
+
+`tool` must be an existing tool slug, because the article is linked from that tool's page. The build warns about broken internal links and about articles under 900 words.
 
 ## Adding a tool
 

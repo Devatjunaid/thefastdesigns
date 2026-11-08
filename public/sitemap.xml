@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://thefastdesigns.online/</loc><lastmod>2026-11-08</lastmod><priority>1.0</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
   <url><loc>https://thefastdesigns.online/about/</loc><lastmod>2026-11-08</lastmod><priority>0.4</priority></url>
   <url><loc>https://thefastdesigns.online/privacy/</loc><lastmod>2026-11-08</lastmod><priority>0.4</priority></url>
+  <url><loc>https://thefastdesigns.online/terms/</loc><lastmod>2026-11-08</lastmod><priority>0.4</priority></url>
+  <url><loc>https://thefastdesigns.online/contact/</loc><lastmod>2026-11-08</lastmod><priority>0.4</priority></url>
   <url><loc>https://thefastdesigns.online/tools/color-converter/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
   <url><loc>https://thefastdesigns.online/tools/color-palette-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
   <url><loc>https://thefastdesigns.online/tools/contrast-checker/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
@@ -42,4 +45,103 @@
   <url><loc>https://thefastdesigns.online/tools/golden-ratio-calculator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
   <url><loc>https://thefastdesigns.online/tools/design-unit-converter/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
   <url><loc>https://thefastdesigns.online/tools/layout-grid-calculator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/random-color-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/color-name-finder/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/color-scale-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/mesh-gradient-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/css-button-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/css-loader-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/clip-path-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/css-pattern-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/neumorphism-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/css-transform-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/gradient-text-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/css-triangle-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/scrollbar-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/css-minifier/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/social-media-image-resizer/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/image-grid-splitter/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/combine-images/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/pixelate-image/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/rounded-corners-image/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/duotone-image-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/exif-remover/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/svg-optimizer/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/qr-code-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/noise-texture-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/text-case-converter/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/spacing-scale-generator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/line-height-calculator/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/viewport-unit-converter/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/paper-size-chart/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/tools/screen-resolution-checker/</loc><lastmod>2026-11-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/hex-rgb-hsl-cmyk-color-codes-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/how-to-build-a-color-palette-with-color-theory/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/wcag-color-contrast-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/tints-shades-and-tones-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/how-to-pick-exact-colors-from-images/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/extract-color-palette-from-photos/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/designing-for-color-blindness/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/digital-color-mixing-rgb-vs-paint/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/why-random-colors-look-bad-and-how-to-fix-it/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-color-names-history-and-color-matching/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/building-color-scales-for-design-systems/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/mesh-gradients-in-css-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-gradients-linear-radial-conic-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-box-shadow-guide-realistic-shadows/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/border-radius-guide-rounded-corners/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/glassmorphism-backdrop-filter-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-text-shadow-effects-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-easing-cubic-bezier-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-grid-layout-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/flexbox-alignment-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/fluid-typography-with-clamp/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/button-design-css-best-practices/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/loading-spinners-vs-skeleton-screens/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-clip-path-shapes-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-background-patterns-without-images/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/neumorphism-soft-ui-pros-and-cons/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-transforms-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/gradient-text-css-background-clip/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-triangles-borders-vs-clip-path/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/styling-scrollbars-with-css/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-minification-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/how-to-resize-images-for-the-web/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/image-compression-lossy-vs-lossless/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/jpg-vs-png-vs-webp-vs-avif/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/cropping-photos-composition-aspect-ratios/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/photo-adjustments-brightness-contrast-saturation/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/exif-orientation-rotated-photos/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/base64-images-data-uris-when-to-use/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/svg-vs-png-when-to-convert/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/favicon-sizes-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/placeholder-images-and-layout-shift/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/watermarking-photos-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/social-media-image-sizes-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/instagram-carousel-panorama-grid-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/combine-images-before-after-collages/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/how-to-safely-redact-screenshots/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/rounded-corners-images-css-vs-baked/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/duotone-effect-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/photo-metadata-exif-privacy/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/svg-optimization-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/modular-type-scales-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/lorem-ipsum-history-and-alternatives/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/organic-blob-shapes-in-web-design/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/svg-wave-section-dividers/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/qr-codes-explained-static-vs-dynamic/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/grain-noise-textures-and-gradient-banding/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/title-case-vs-sentence-case/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/8pt-grid-spacing-system/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/aspect-ratios-explained/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/px-vs-rem-vs-em/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/ppi-vs-dpi-pixel-density/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/print-resolution-dpi-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/golden-ratio-in-design-myth-and-practice/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/points-picas-pixels-design-units/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/layout-grids-12-column-guide/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/line-height-and-line-length-readability/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/css-viewport-units-vw-vh-dvh/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/paper-sizes-iso-216-vs-us-letter/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://thefastdesigns.online/blog/screen-resolution-vs-viewport-vs-dpr/</loc><lastmod>2026-11-08</lastmod><priority>0.7</priority></url>
 </urlset>

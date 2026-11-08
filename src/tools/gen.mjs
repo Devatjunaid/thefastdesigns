@@ -38,7 +38,7 @@ ${txt('tySample', 'Preview text', 'Design is intelligence made visible')}
   intro: 'Fill your layouts with realistic-looking placeholder copy. Choose how much text you need and copy it as plain text or HTML.',
   html: `<div class="tool-layout"><div class="panel" id="liP">
 <div class="grid2">${num('liN', 'Amount', 3, 'min="1" max="100"')}${sel('liT', 'Type', [['p', 'Paragraphs'], ['s', 'Sentences'], ['w', 'Words']], 'p')}</div>
-${chk('liStart', 'Start with “Lorem ipsum dolor sit amet…”', true)}${chk('liHtml', 'Wrap paragraphs in <p> tags')}
+${chk('liStart', 'Start with “Lorem ipsum dolor sit amet…”', true)}${chk('liHtml', 'Wrap paragraphs in &lt;p&gt; tags')}
 <div class="btn-row"><button type="button" class="btn" id="liGo">Generate</button><button type="button" class="btn-alt" data-copy-from="liOut">Copy text</button></div>
 <div class="stat-grid" style="margin-top:14px"><div class="stat"><span>Words</span><b id="liW">0</b></div><div class="stat"><span>Characters</span><b id="liC">0</b></div></div>
 </div><div class="panel"><textarea id="liOut" class="prose" rows="16" readonly></textarea></div></div>`,
