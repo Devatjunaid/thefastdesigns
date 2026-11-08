@@ -84,7 +84,7 @@ function head({ title, desc, path, kw = [], schema = [], type = 'website', image
 <link rel="canonical" href="${url}"><meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:type" content="${type}"><meta property="og:site_name" content="${BRAND}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${url}"><meta property="og:image" content="${image || SITE + '/og-image.png'}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${image || SITE + '/og-image.png'}">
-<meta name="theme-color" content="#141414"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+<meta name="google-site-verification" content="3ewXG5aBPXLl4D3pGwPa8qpDPNNecMub9y9tapAzQB4"><meta name="theme-color" content="#141414"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
 <style>${minCss}</style>
 ${schema.map(ld).join('\n')}
 </head><body><a class="skip" href="#main">Skip to content</a>`;
